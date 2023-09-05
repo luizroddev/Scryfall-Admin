@@ -1,0 +1,28 @@
+@model Scryfall_Admin.Models.Carta
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalhes da Carta</h2>
+
+<div>
+    <h4>@Model.Nome</h4>
+    <p>Mana: @Model.Mana</p>
+    <p>Custo de Mana: @Model.CustoDeMana</p>
+    <p>Tipo: @Model.Tipo</p>
+    <p>Texto: @Model.Texto</p>
+    <p>Poder: @Model.Poder</p>
+    <p>Resistência: @Model.Resistencia</p>
+    <p>Legalidades: @Model.Legalidades.Standard, @Model.Legalidades.Modern, @Model.Legalidades.Legacy, @Model.Legalidades.Pauper, @Model.Legalidades.Duel, @Model.Legalidades.Predh</p>
+    <p>Image Uris: @Model.ImageUris.Small, @Model.ImageUris.Normal, @Model.ImageUris.Large</p>
+    <p>Lealdade: @Model.Lealdade</p>
+    <p>Raridade: @Model.Raridade</p>
+    <p>Flavor Text: @Model.FlavorText</p>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,103 @@
+@model Scryfall_Admin.Models.Carta
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Cartas</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label for="Nome">Nome</label>
+                <input asp-for="Nome" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Mana">Mana</label>
+                <input asp-for="Mana" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="CustoDeMana">Custo de Mana</label>
+                <input asp-for="CustoDeMana" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Tipo">Tipo</label>
+                <input asp-for="Tipo" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Texto">Texto</label>
+                <input asp-for="Texto" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Poder">Poder</label>
+                <input asp-for="Poder" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Resistencia">Resistência</label>
+                <input asp-for="Resistencia" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Legalidades.Standard">Legalidades Standard</label>
+                <input asp-for="Legalidades.Standard" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Legalidades.Modern">Legalidades Modern</label>
+                <input asp-for="Legalidades.Modern" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Legalidades.Legacy">Legalidades Legacy</label>
+                <input asp-for="Legalidades.Legacy" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Legalidades.Pauper">Legalidades Pauper</label>
+                <input asp-for="Legalidades.Pauper" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Legalidades.Duel">Legalidades Duel</label>
+                <input asp-for="Legalidades.Duel" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Legalidades.Predh">Legalidades Predh</label>
+                <input asp-for="Legalidades.Predh" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="ImageUris.Small">Image Uris Small</label>
+                <input asp-for="ImageUris.Small" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="ImageUris.Normal">Image Uris Normal</label>
+                <input asp-for="ImageUris.Normal" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="ImageUris.Large">Image Uris Large</label>
+                <input asp-for="ImageUris.Large" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Lealdade">Lealdade</label>
+                <input asp-for="Lealdade" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Raridade">Raridade</label>
+                <input asp-for="Raridade" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="FlavorText">Flavor Text</label>
+                <input asp-for="FlavorText" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

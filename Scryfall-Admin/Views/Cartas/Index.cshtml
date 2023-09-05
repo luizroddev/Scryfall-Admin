@@ -1,0 +1,58 @@
+@model IEnumerable<Scryfall_Admin.Models.Carta>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<h2>Lista de Cartas</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Mana</th>
+            <th>Custo de Mana</th>
+            <th>Tipo</th>
+            <th>Texto</th>
+            <th>Poder</th>
+            <th>Resistência</th>
+            <th>Legalidades</th>
+            <th>Image Uris</th>
+            <th>Lealdade</th>
+            <th>Raridade</th>
+            <th>Flavor Text</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var carta in Model)
+        {
+            <tr>
+                <td>@carta.Nome</td>
+                <td>@carta.Mana</td>
+                <td>@carta.CustoDeMana</td>
+                <td>@carta.Tipo</td>
+                <td>@carta.Texto</td>
+                <td>@carta.Poder</td>
+                <td>@carta.Resistencia</td>
+                <td>@carta.Legalidades.Standard, @carta.Legalidades.Modern, @carta.Legalidades.Legacy, @carta.Legalidades.Pauper, @carta.Legalidades.Duel, @carta.Legalidades.Predh</td>
+                <td>@carta.ImageUris.Small, @carta.ImageUris.Normal, @carta.ImageUris.Large</td>
+                <td>@carta.Lealdade</td>
+                <td>@carta.Lealdade</td>
+                <td>@carta.Raridade</td>
+                <td>@carta.FlavorText</td>
+                <td>
+                    <a asp-controller="Cartas" asp-action="Details" asp-route-id="@carta.Id">Detalhes</a> |
+                    <a asp-controller="Cartas" asp-action="Edit" asp-route-id="@carta.Id">Editar</a> |
+                    <a asp-controller="Cartas" asp-action="Delete" asp-route-id="@carta.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
