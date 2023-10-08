@@ -2,7 +2,7 @@
 
 namespace Scryfall_Admin.Models
 {
-    public class ImageUris
+    public class CartaImagens
     {
         [Key]
         public int Id { get; set; }

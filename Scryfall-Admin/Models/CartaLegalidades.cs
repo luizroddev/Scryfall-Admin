@@ -2,7 +2,7 @@
 
 namespace Scryfall_Admin.Models
 {
-    public class Legalidades
+    public class CartaLegalidades
     {
         [Key]
         public int Id { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Scryfall_Admin.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scryfall_Admin.Models
@@ -15,10 +16,15 @@ namespace Scryfall_Admin.Models
         public string Texto { get; set; }
         public int Poder { get; set; }
         public int Resistencia { get; set; }
-        public Legalidades Legalidades { get; set; }
-        public ImageUris ImageUris { get; set; }
         public int? Lealdade { get; set; }
-        public string Raridade { get; set; }
         public string FlavorText { get; set; }
+        public CartaRaridade Raridade { get; set; }
+        public CartaImagensUris ImagemUris { get; set; }
+        public CartaLegalidades Legalidades { get; set; }
+
+        // Chaves Estrageiras
+
+        public int LegalidadeId { get; set; }
+        public int ImageUriId { get; set; }
     }
 }
