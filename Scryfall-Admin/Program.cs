@@ -10,6 +10,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Adicione o serviço IMemoryCache
+builder.Services.AddMemoryCache(); // Adicione esta linha
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
