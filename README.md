@@ -58,6 +58,6 @@ dotnet restore
 dotnet run
 ```
 
-O aplicativo estará acessível em `https://localhost:5001` (ou `http://localhost:5000`).
+O aplicativo estará acessível em `https://localhost:7202`.
 
 Aproveite o uso do Scryfall Card Manager para gerenciar suas cartas do Scryfall! Se você tiver alguma dúvida ou encontrar problemas, sinta-se à vontade para entrar em contato conosco.
