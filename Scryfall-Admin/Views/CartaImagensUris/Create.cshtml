@@ -1,0 +1,43 @@
+﻿@model Scryfall_Admin.Models.CartaImagensUris
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>CartaImagensUris</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Small" class="control-label"></label>
+                <input asp-for="Small" class="form-control" />
+                <span asp-validation-for="Small" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Normal" class="control-label"></label>
+                <input asp-for="Normal" class="form-control" />
+                <span asp-validation-for="Normal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Large" class="control-label"></label>
+                <input asp-for="Large" class="form-control" />
+                <span asp-validation-for="Large" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

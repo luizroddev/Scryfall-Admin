@@ -43,48 +43,20 @@
                 <input asp-for="Resistencia" class="form-control" />
             </div>
             <div class="form-group">
-                <label for="Legalidades.Standard">Legalidades Standard</label>
-                <input asp-for="Legalidades.Standard" class="form-control" />
+                <label asp-for="ImagemUrisId">ImagemUris Id</label>
+                <select asp-for="ImagemUrisId" class="form-control" asp-items="ViewBag.ImagemUrisId"></select>
             </div>
             <div class="form-group">
-                <label for="Legalidades.Modern">Legalidades Modern</label>
-                <input asp-for="Legalidades.Modern" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Legalidades.Legacy">Legalidades Legacy</label>
-                <input asp-for="Legalidades.Legacy" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Legalidades.Pauper">Legalidades Pauper</label>
-                <input asp-for="Legalidades.Pauper" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Legalidades.Duel">Legalidades Duel</label>
-                <input asp-for="Legalidades.Duel" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Legalidades.Predh">Legalidades Predh</label>
-                <input asp-for="Legalidades.Predh" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="ImageUris.Small">Image Uris Small</label>
-                <input asp-for="ImageUris.Small" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="ImageUris.Normal">Image Uris Normal</label>
-                <input asp-for="ImageUris.Normal" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="ImageUris.Large">Image Uris Large</label>
-                <input asp-for="ImageUris.Large" class="form-control" />
+                <label asp-for="LegalidadesId">Legalidade Id</label>
+                <select asp-for="LegalidadesId" class="form-control" asp-items="ViewBag.LegalidadesId"></select>
             </div>
             <div class="form-group">
                 <label for="Lealdade">Lealdade</label>
                 <input asp-for="Lealdade" class="form-control" />
             </div>
             <div class="form-group">
-                <label for="Raridade">Raridade</label>
-                <input asp-for="Raridade" class="form-control" />
+                <label asp-for="Raridade">Raridade</label>
+                <select asp-for="Raridade" class="form-control" asp-items="ViewBag.Raridade"></select>
             </div>
             <div class="form-group">
                 <label for="FlavorText">Flavor Text</label>

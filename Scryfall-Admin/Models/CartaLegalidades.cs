@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scryfall_Admin.Models
 {
-    public class Legalidades
+    public class CartaLegalidades
     {
         [Key]
         public int Id { get; set; }
@@ -13,5 +14,7 @@ namespace Scryfall_Admin.Models
         public string Duel { get; set; }
         public string Predh { get; set; }
 
+        // Chaves estrangeiras
+        public virtual ICollection<Carta>? Cartas { get; set; }
     }
 }

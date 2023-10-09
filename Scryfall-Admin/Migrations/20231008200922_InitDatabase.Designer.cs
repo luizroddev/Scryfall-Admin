@@ -12,8 +12,8 @@ using Scryfall_Admin.Data;
 namespace Scryfall_Admin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230905224546_bancoinicial")]
-    partial class bancoinicial
+    [Migration("20231008200922_InitDatabase")]
+    partial class InitDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace Scryfall_Admin.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int>("ImageUrisId")
+                    b.Property<int>("ImagemUrisId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<int?>("Lealdade")
@@ -60,9 +60,8 @@ namespace Scryfall_Admin.Migrations
                     b.Property<int>("Poder")
                         .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("Raridade")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
+                    b.Property<int>("Raridade")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("Resistencia")
                         .HasColumnType("NUMBER(10)");
@@ -77,20 +76,19 @@ namespace Scryfall_Admin.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageUrisId");
-
-                    b.HasIndex("LegalidadesId");
-
                     b.ToTable("Cartas");
                 });
 
-            modelBuilder.Entity("Scryfall_Admin.Models.ImageUris", b =>
+            modelBuilder.Entity("Scryfall_Admin.Models.CartaImagensUris", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartaId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Large")
                         .IsRequired()
@@ -106,16 +104,22 @@ namespace Scryfall_Admin.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CartaId")
+                        .IsUnique();
+
                     b.ToTable("ImageUris");
                 });
 
-            modelBuilder.Entity("Scryfall_Admin.Models.Legalidades", b =>
+            modelBuilder.Entity("Scryfall_Admin.Models.CartaLegalidades", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartaId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Duel")
                         .IsRequired()
@@ -143,26 +147,41 @@ namespace Scryfall_Admin.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CartaId")
+                        .IsUnique();
+
                     b.ToTable("Legalidades");
+                });
+
+            modelBuilder.Entity("Scryfall_Admin.Models.CartaImagensUris", b =>
+                {
+                    b.HasOne("Scryfall_Admin.Models.Carta", "Carta")
+                        .WithOne("ImagemUris")
+                        .HasForeignKey("Scryfall_Admin.Models.CartaImagensUris", "CartaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carta");
+                });
+
+            modelBuilder.Entity("Scryfall_Admin.Models.CartaLegalidades", b =>
+                {
+                    b.HasOne("Scryfall_Admin.Models.Carta", "Carta")
+                        .WithOne("Legalidades")
+                        .HasForeignKey("Scryfall_Admin.Models.CartaLegalidades", "CartaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carta");
                 });
 
             modelBuilder.Entity("Scryfall_Admin.Models.Carta", b =>
                 {
-                    b.HasOne("Scryfall_Admin.Models.ImageUris", "ImageUris")
-                        .WithMany()
-                        .HasForeignKey("ImageUrisId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Navigation("ImagemUris")
                         .IsRequired();
 
-                    b.HasOne("Scryfall_Admin.Models.Legalidades", "Legalidades")
-                        .WithMany()
-                        .HasForeignKey("LegalidadesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Navigation("Legalidades")
                         .IsRequired();
-
-                    b.Navigation("ImageUris");
-
-                    b.Navigation("Legalidades");
                 });
 #pragma warning restore 612, 618
         }
