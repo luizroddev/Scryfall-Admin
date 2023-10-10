@@ -30,6 +30,9 @@ namespace Scryfall_Admin.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ColecaoId")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<int>("CustoDeMana")
                         .HasColumnType("NUMBER(10)");
 
@@ -72,6 +75,8 @@ namespace Scryfall_Admin.Migrations
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ColecaoId");
 
                     b.HasIndex("ImagemUrisId");
 
@@ -142,8 +147,37 @@ namespace Scryfall_Admin.Migrations
                     b.ToTable("Legalidades");
                 });
 
+            modelBuilder.Entity("Scryfall_Admin.Models.Colecao", b =>
+                {
+                    b.Property<int>("ColecaoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ColecaoId"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("NVARCHAR2(500)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR2(100)");
+
+                    b.HasKey("ColecaoId");
+
+                    b.ToTable("Colecao");
+                });
+
             modelBuilder.Entity("Scryfall_Admin.Models.Carta", b =>
                 {
+                    b.HasOne("Scryfall_Admin.Models.Colecao", "Colecao")
+                        .WithMany("Cartas")
+                        .HasForeignKey("ColecaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Scryfall_Admin.Models.CartaImagensUris", "ImagemUris")
                         .WithMany("Cartas")
                         .HasForeignKey("ImagemUrisId")
@@ -156,6 +190,8 @@ namespace Scryfall_Admin.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Colecao");
+
                     b.Navigation("ImagemUris");
 
                     b.Navigation("Legalidades");
@@ -167,6 +203,11 @@ namespace Scryfall_Admin.Migrations
                 });
 
             modelBuilder.Entity("Scryfall_Admin.Models.CartaLegalidades", b =>
+                {
+                    b.Navigation("Cartas");
+                });
+
+            modelBuilder.Entity("Scryfall_Admin.Models.Colecao", b =>
                 {
                     b.Navigation("Cartas");
                 });

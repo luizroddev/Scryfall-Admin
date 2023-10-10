@@ -30,8 +30,11 @@ public partial class Carta
     public int LegalidadesId { get; set; }
 
     public int ImagemUrisId { get; set; }
+    
+    public int ColecaoId { get; set; }
 
     public virtual CartaImagensUris? ImagemUris { get; set; } = null!;
 
     public virtual CartaLegalidades? Legalidades { get; set; } = null!;
+    public virtual Colecao? Colecao { get; set; } = null!;
 }

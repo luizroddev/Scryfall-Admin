@@ -27,7 +27,7 @@ namespace Scryfall_Admin.Controllers
             if (!_memoryCache.TryGetValue("cachedCardList", out List<Carta> cachedCardList))
             {
                 cachedCardList = await _context.Cartas.Include(c => c.ImagemUris)
-                .Include(c => c.Legalidades).ToListAsync();
+                .Include(c => c.Legalidades).Include(c => c.Colecao).ToListAsync();
 
                 _memoryCache.Set("cachedCardList", cachedCardList, TimeSpan.FromMinutes(10));
             }
@@ -47,7 +47,7 @@ namespace Scryfall_Admin.Controllers
             if (!_memoryCache.TryGetValue(cacheValue, out Carta carta))
             {
                 carta = await _context.Cartas.Include(c => c.ImagemUris)
-    .Include(c => c.Legalidades).FirstOrDefaultAsync(m => m.Id == id);
+    .Include(c => c.Legalidades).Include(c => c.Colecao).FirstOrDefaultAsync(m => m.Id == id);
 
                 if (carta != null)
                 {
@@ -68,8 +68,8 @@ namespace Scryfall_Admin.Controllers
         {
             var cacheValue = "createSelectList";
 
-            if (!_memoryCache.TryGetValue(cacheValue, out (IEnumerable<SelectListItem> ImagesList, IEnumerable<SelectListItem> LegalidadeList, IEnumerable<SelectListItem> RaridadeList) selectLists))
-            {
+            //if (!_memoryCache.TryGetValue(cacheValue, out (IEnumerable<SelectListItem> ImagesList, IEnumerable<SelectListItem> LegalidadeList, IEnumerable<SelectListItem> RaridadeList) selectLists))
+            //{
                 var ImageList = _context.ImageUris.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Id.ToString() }).ToList();
                 var LegalidadeList = _context.Legalidades.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Id.ToString() }).ToList();
                 var RaridadeList = Enum.GetValues(typeof(CartaRaridade))
@@ -80,31 +80,35 @@ namespace Scryfall_Admin.Controllers
                         Text = e.ToString()
                     })
                     .ToList();
-                selectLists = (ImageList, LegalidadeList, RaridadeList);
-                _memoryCache.Set(cacheValue, selectLists, TimeSpan.FromMinutes(10));
-            }
-            ViewData["LegalidadesId"] = new SelectList(selectLists.LegalidadeList, "Value", "Text");
-            ViewData["ImagemUrisId"] = new SelectList(selectLists.ImagesList, "Value", "Text");
-            ViewData["Raridade"] = new SelectList(selectLists.RaridadeList, "Value", "Text");
+                var ColecaoList = _context.Colecao.Select(c => new SelectListItem { Value = c.ColecaoId.ToString(), Text = c.Nome }).ToList();
+            //selectLists = (ImageList, LegalidadeList, RaridadeList);
+            //    _memoryCache.Set(cacheValue, selectLists, TimeSpan.FromMinutes(10));
+            //}
+            ViewData["LegalidadesId"] = new SelectList(LegalidadeList, "Value", "Text");
+            ViewData["ImagemUrisId"] = new SelectList(ImageList, "Value", "Text");
+            ViewData["Raridade"] = new SelectList(RaridadeList, "Value", "Text");
+            ViewData["ColecaoId"] = new SelectList(ColecaoList, "Value", "Text");
             return View();
         }
 
         // POST: Carta/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Mana,CustoDeMana,Tipo,Texto,Poder,Resistencia,Lealdade,FlavorText,Raridade,LegalidadesId,ImagemUrisId")] Carta carta)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Mana,CustoDeMana,Tipo,Texto,Poder,Resistencia,Lealdade,FlavorText,Raridade,LegalidadesId,ImagemUrisId,ColecaoId")] Carta carta)
         {
             if (ModelState.IsValid)
             {
                 carta.ImagemUris = _context.ImageUris.Find(carta.ImagemUrisId);
                 carta.Legalidades = _context.Legalidades.Find(carta.LegalidadesId);
+                carta.Colecao = _context.Colecao.Find(carta.ColecaoId);
+
                 _context.Add(carta);
                 await _context.SaveChangesAsync();
 
-                var cacheValue = "createSelectList";
+                //var cacheValue = "createSelectList";
 
-                if (!_memoryCache.TryGetValue(cacheValue, out (IEnumerable<SelectListItem> ImagesList, IEnumerable<SelectListItem> LegalidadeList, IEnumerable<SelectListItem> RaridadeList) selectLists))
-                {
+                //if (!_memoryCache.TryGetValue(cacheValue, out (IEnumerable<SelectListItem> ImagesList, IEnumerable<SelectListItem> LegalidadeList, IEnumerable<SelectListItem> RaridadeList, IEnumerable<SelectListItem> ColecaoList) selectLists))
+                //{
                     var ImageList = _context.ImageUris.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Id.ToString() }).ToList();
                     var LegalidadeList = _context.Legalidades.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Id.ToString() }).ToList();
                     var RaridadeList = Enum.GetValues(typeof(CartaRaridade))
@@ -115,21 +119,23 @@ namespace Scryfall_Admin.Controllers
                             Text = e.ToString()
                         })
                         .ToList();
-                    selectLists = (ImageList, LegalidadeList, RaridadeList);
-                    _memoryCache.Set(cacheValue, selectLists, TimeSpan.FromMinutes(10));
-                }
+                    var ColecaoList = await _context.Colecao.Select(c => new SelectListItem { Value = c.ColecaoId.ToString(), Text = c.Nome }).ToListAsync();
+                    //selectLists = (ImageList, LegalidadeList, RaridadeList, ColecaoList);
+                //    _memoryCache.Set(cacheValue, selectLists, TimeSpan.FromMinutes(10));
+                //}
 
                 if (_memoryCache.TryGetValue("cachedCardList", out List<Carta> cachedCardList))
                 {
                     cachedCardList = await _context.Cartas.Include(c => c.ImagemUris)
-                    .Include(c => c.Legalidades).ToListAsync();
+                    .Include(c => c.Legalidades).Include(c => c.Colecao).ToListAsync();
 
                     _memoryCache.Set("cachedCardList", cachedCardList, TimeSpan.FromMinutes(10));
                 }
 
-                ViewData["LegalidadesId"] = new SelectList(selectLists.LegalidadeList, "Value", "Text");
-                ViewData["ImagemUrisId"] = new SelectList(selectLists.ImagesList, "Value", "Text");
-                ViewData["Raridade"] = new SelectList(selectLists.RaridadeList, "Value", "Text");
+                ViewData["LegalidadesId"] = new SelectList(LegalidadeList, "Value", "Text");
+                ViewData["ImagemUrisId"] = new SelectList(ImageList, "Value", "Text");
+                ViewData["Raridade"] = new SelectList(RaridadeList, "Value", "Text");
+                ViewData["ColecaoId"] = new SelectList(ColecaoList, "Value", "Text");
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -149,6 +155,8 @@ namespace Scryfall_Admin.Controllers
             var carta = await _context.Cartas.FindAsync(id);
             carta.ImagemUris = _context.ImageUris.Find(carta.ImagemUrisId);
             carta.Legalidades = _context.Legalidades.Find(carta.LegalidadesId);
+            carta.Colecao = _context.Colecao.Find(carta.ColecaoId);
+
             var ImageList = _context.ImageUris.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Id.ToString() }).ToList();
             var LegalidadeList = _context.Legalidades.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Id.ToString() }).ToList();
             var RaridadeList = Enum.GetValues(typeof(CartaRaridade))
@@ -159,9 +167,13 @@ namespace Scryfall_Admin.Controllers
                         Text = e.ToString()
                     })
                     .ToList();
+            var ColecaoList = await _context.Colecao.Select(c => new SelectListItem { Value = c.ColecaoId.ToString(), Text = c.Nome }).ToListAsync();
+
             ViewData["LegalidadesId"] = new SelectList(LegalidadeList, "Value", "Text");
             ViewData["ImagemUrisId"] = new SelectList(ImageList, "Value", "Text");
             ViewData["Raridade"] = new SelectList(RaridadeList, "Value", "Text");
+            ViewData["ColecaoId"] = new SelectList(ColecaoList, "Value", "Text");
+
             if (carta == null)
             {
                 return NotFound();
@@ -172,7 +184,7 @@ namespace Scryfall_Admin.Controllers
         // POST: Carta/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Mana,CustoDeMana,Tipo,Texto,Poder,Resistencia,Lealdade,FlavorText,Raridade,LegalidadesId,ImagemUrisId")] Carta carta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Mana,CustoDeMana,Tipo,Texto,Poder,Resistencia,Lealdade,FlavorText,Raridade,LegalidadesId,ImagemUrisId,ColecaoId")] Carta carta)
         {
             if (id != carta.Id)
             {
@@ -189,7 +201,7 @@ namespace Scryfall_Admin.Controllers
                     if (_memoryCache.TryGetValue("cachedCardList", out List<Carta> cachedCardList))
                     {
                         cachedCardList = await _context.Cartas.Include(c => c.ImagemUris)
-                        .Include(c => c.Legalidades).ToListAsync();
+                        .Include(c => c.Legalidades).Include(c => c.Colecao).ToListAsync();
 
                         _memoryCache.Set("cachedCardList", cachedCardList, TimeSpan.FromMinutes(10));
                     }
@@ -239,7 +251,7 @@ namespace Scryfall_Admin.Controllers
             if (_memoryCache.TryGetValue("cachedCardList", out List<Carta> cachedCardList))
             {
                 cachedCardList = await _context.Cartas.Include(c => c.ImagemUris)
-                .Include(c => c.Legalidades).ToListAsync();
+                .Include(c => c.Legalidades).Include(c => c.Colecao).ToListAsync();
 
                 _memoryCache.Set("cachedCardList", cachedCardList, TimeSpan.FromMinutes(10));
             }

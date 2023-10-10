@@ -13,6 +13,7 @@ namespace Scryfall_Admin.Data
         public DbSet<Carta> Cartas { get; set; }
         public DbSet<CartaImagensUris> ImageUris { get; set; } // DbSet para a entidade ImageUris
         public DbSet<CartaLegalidades> Legalidades { get; set; } // DbSet para a entidade Legalidades
+        public DbSet<Colecao> Colecao { get; set; } // DbSet para a entidade Colecao
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,7 +38,11 @@ namespace Scryfall_Admin.Data
               .HasMany(c => c.Cartas)
               .WithOne(c => c.Legalidades)
               .OnDelete(DeleteBehavior.Cascade);
-        }
 
+            modelBuilder.Entity<Colecao>()
+              .HasMany(c => c.Cartas)
+              .WithOne(c => c.Colecao)
+              .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }
