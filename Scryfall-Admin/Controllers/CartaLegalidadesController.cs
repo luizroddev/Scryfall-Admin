@@ -155,7 +155,7 @@ namespace Scryfall_Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartaLegalidadesExists(int id)
+        public bool CartaLegalidadesExists(int id)
         {
           return (_context.Legalidades?.Any(e => e.Id == id)).GetValueOrDefault();
         }

@@ -169,7 +169,7 @@ namespace Scryfall_Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartaImagensUrisExists(int id)
+        public bool CartaImagensUrisExists(int id)
         {
           return (_context.ImageUris?.Any(e => e.Id == id)).GetValueOrDefault();
         }

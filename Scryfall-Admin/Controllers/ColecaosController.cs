@@ -155,7 +155,7 @@ namespace Scryfall_Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ColecaoExists(int id)
+        public bool ColecaoExists(int id)
         {
           return (_context.Colecao?.Any(e => e.ColecaoId == id)).GetValueOrDefault();
         }

@@ -68,8 +68,6 @@ namespace Scryfall_Admin.Controllers
         {
             var cacheValue = "createSelectList";
 
-            //if (!_memoryCache.TryGetValue(cacheValue, out (IEnumerable<SelectListItem> ImagesList, IEnumerable<SelectListItem> LegalidadeList, IEnumerable<SelectListItem> RaridadeList) selectLists))
-            //{
                 var ImageList = _context.ImageUris.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Id.ToString() }).ToList();
                 var LegalidadeList = _context.Legalidades.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Id.ToString() }).ToList();
                 var RaridadeList = Enum.GetValues(typeof(CartaRaridade))
@@ -81,9 +79,6 @@ namespace Scryfall_Admin.Controllers
                     })
                     .ToList();
                 var ColecaoList = _context.Colecao.Select(c => new SelectListItem { Value = c.ColecaoId.ToString(), Text = c.Nome }).ToList();
-            //selectLists = (ImageList, LegalidadeList, RaridadeList);
-            //    _memoryCache.Set(cacheValue, selectLists, TimeSpan.FromMinutes(10));
-            //}
             ViewData["LegalidadesId"] = new SelectList(LegalidadeList, "Value", "Text");
             ViewData["ImagemUrisId"] = new SelectList(ImageList, "Value", "Text");
             ViewData["Raridade"] = new SelectList(RaridadeList, "Value", "Text");
@@ -105,10 +100,6 @@ namespace Scryfall_Admin.Controllers
                 _context.Add(carta);
                 await _context.SaveChangesAsync();
 
-                //var cacheValue = "createSelectList";
-
-                //if (!_memoryCache.TryGetValue(cacheValue, out (IEnumerable<SelectListItem> ImagesList, IEnumerable<SelectListItem> LegalidadeList, IEnumerable<SelectListItem> RaridadeList, IEnumerable<SelectListItem> ColecaoList) selectLists))
-                //{
                     var ImageList = _context.ImageUris.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Id.ToString() }).ToList();
                     var LegalidadeList = _context.Legalidades.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Id.ToString() }).ToList();
                     var RaridadeList = Enum.GetValues(typeof(CartaRaridade))
@@ -120,9 +111,6 @@ namespace Scryfall_Admin.Controllers
                         })
                         .ToList();
                     var ColecaoList = await _context.Colecao.Select(c => new SelectListItem { Value = c.ColecaoId.ToString(), Text = c.Nome }).ToListAsync();
-                    //selectLists = (ImageList, LegalidadeList, RaridadeList, ColecaoList);
-                //    _memoryCache.Set(cacheValue, selectLists, TimeSpan.FromMinutes(10));
-                //}
 
                 if (_memoryCache.TryGetValue("cachedCardList", out List<Carta> cachedCardList))
                 {
@@ -205,6 +193,13 @@ namespace Scryfall_Admin.Controllers
 
                         _memoryCache.Set("cachedCardList", cachedCardList, TimeSpan.FromMinutes(10));
                     }
+
+                    var cacheValue = $"cachedCardDetails_{id}";
+
+                    if (_memoryCache.TryGetValue(cacheValue, out Carta cartaupdated))
+                    {
+                        _memoryCache.Set(cacheValue, carta, TimeSpan.FromMinutes(10));
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -258,7 +253,7 @@ namespace Scryfall_Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartaExists(int id)
+        public bool CartaExists(int id)
         {
             return _context.Cartas.Any(e => e.Id == id);
         }
